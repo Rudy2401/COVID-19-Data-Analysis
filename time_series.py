@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series'
@@ -7,6 +8,7 @@ df_global_confirmed = pd.read_csv(f'{URL}/time_series_covid19_confirmed_global.c
 df_us_confirmed = pd.read_csv(f'{URL}/time_series_covid19_confirmed_US.csv')
 df_us_deaths = pd.read_csv(f'{URL}/time_series_covid19_deaths_US.csv')
 df_global_confirmed = pd.read_csv(f'{URL}/time_series_covid19_confirmed_global.csv')
+
 
 def us_plot_deaths():
     df = df_us_deaths.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key', 'Population'],
@@ -20,8 +22,15 @@ def us_plot_deaths():
 
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_', 'Population'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Deaths')
-    df_state.plot()
-    plt.grid()
+    ax = df_state.plot(title='US States deaths time series',
+                       grid=True,
+                       lw=2,
+                       colormap='jet',
+                       markersize=10,
+                       x_compat=True)
+    ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Confirmed')
 
 def us_plot_confirmed():
     df = df_us_confirmed.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'],
@@ -35,8 +44,15 @@ def us_plot_confirmed():
 
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Confirmed')
-    df_state.plot()
-    plt.grid()
+    ax = df_state.plot(title='US States confirmed cases time series',
+                       grid=True,
+                       lw=2,
+                       colormap='jet',
+                       markersize=10,
+                       x_compat=True)
+    ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Confirmed')
 
 def us_pct_change_confirmed():
     df = df_us_confirmed.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'],
@@ -50,8 +66,15 @@ def us_pct_change_confirmed():
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Confirmed')
     df_pct_change = df_state.pct_change()
-    df_pct_change.plot()
-    plt.grid()
+    ax = df_pct_change.plot(title='US States day-to-day percent change in confirmed cases',
+                            grid=True,
+                            lw=2,
+                            colormap='jet',
+                            markersize=10,
+                            x_compat=True)
+    ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Percent Change')
 
 def us_pct_change_deaths():
     df = df_us_deaths.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key', 'Population'],
@@ -66,8 +89,15 @@ def us_pct_change_deaths():
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_', 'Population'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Deaths')
     df_pct_change = df_state.pct_change()
-    df_pct_change.plot()
-    plt.grid()
+    ax = df_pct_change.plot(title='US States day-to-day percent change in deaths',
+                            grid=True,
+                            lw=2,
+                            colormap='jet',
+                            markersize=10,
+                            x_compat=True)
+    ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Percent Change')
 
 def global_plot_confirmed():
     df = df_global_confirmed.melt(id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'],
@@ -81,8 +111,15 @@ def global_plot_confirmed():
 
     df_state.drop(columns=['Lat', 'Long'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Country/Region', values='Confirmed')
-    df_state.plot()
-    plt.grid()
+    ax = df_state.plot(title='Global confirmed cases time series',
+                       grid=True,
+                       lw=2,
+                       colormap='jet',
+                       markersize=10,
+                       x_compat=True)
+    ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Confirmed')
 
 def global_pct_change_confirmed():
     df = df_global_confirmed.melt(id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'],
@@ -97,8 +134,16 @@ def global_pct_change_confirmed():
     df_state.drop(columns=['Lat', 'Long'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Country/Region', values='Confirmed')
     df_pct_change = df_state.pct_change()
-    df_pct_change.plot()
-    plt.grid()
+
+    ax = df_pct_change.plot(title='Global day-to-day percent change in confirmed cases',
+                            grid=True,
+                            lw=2,
+                            colormap='jet',
+                            markersize=10,
+                            x_compat=True)
+    ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Percent Change')
 
 
 def main():
