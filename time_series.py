@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from bokeh.plotting import figure, show
-from bokeh.sampledata.glucose import data
+
 
 URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series'
 df_global_confirmed = pd.read_csv(f'{URL}/time_series_covid19_confirmed_global.csv')
