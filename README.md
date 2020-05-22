@@ -1,11 +1,12 @@
 # COVID-19-Data-Analysis
 COVID-19 time series charts - Global and US states
 
-This script pulls the time series data from https://github.com/CSSEGISandData/COVID-19 creates charts using matplotlib.
-Following conditions were added:
+This script pulls the time series data from https://github.com/CSSEGISandData/COVID-19 and creates charts using matplotlib.
+Following conditions were used:
 * US States Deaths > 3000
 * US States Confirmed > 50000
 * Global Confirmed > 75000
+* Global Deaths > 10000
 
 The charts shown below:
 ![Figure_1](/images/Figure_1.png)
