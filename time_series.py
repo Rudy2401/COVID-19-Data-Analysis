@@ -8,20 +8,23 @@ df_us_confirmed = pd.read_csv(f'{URL}/time_series_covid19_confirmed_US.csv')
 df_us_deaths = pd.read_csv(f'{URL}/time_series_covid19_deaths_US.csv')
 df_global_deaths = pd.read_csv(f'{URL}/time_series_covid19_deaths_global.csv')
 
-GLOBAL_CONFIRMRED_THRESHOLD = 100000
+GLOBAL_CONFIRMED_THRESHOLD = 100000
 GLOBAL_DEATHS_THRESHOLD = 25000
-US_STATES_CONFIRMRED_THRESHOLD = 75000
+US_STATES_CONFIRMED_THRESHOLD = 75000
 US_STATES_DEATHS_THRESHOLD = 5000
 
+
 def us_plot_deaths():
-    df = df_us_deaths.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key', 'Population'],
-                           var_name='Date', 
-                           value_name='Deaths')
+    df = df_us_deaths.melt(
+        id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                 'Combined_Key', 'Population'],
+        var_name='Date',
+        value_name='Deaths')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Province_State', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Deaths']>US_STATES_DEATHS_THRESHOLD)]
+    df_state = df_state[(df_state['Deaths'] > US_STATES_DEATHS_THRESHOLD)]
 
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_', 'Population'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Deaths')
@@ -34,18 +37,21 @@ def us_plot_deaths():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Confirmed')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def us_plot_confirmed():
-    df = df_us_confirmed.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'],
-                              var_name='Date', 
-                              value_name='Confirmed')
+    df = df_us_confirmed.melt(
+        id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                 'Combined_Key'],
+        var_name='Date',
+        value_name='Confirmed')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Province_State', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Confirmed']>US_STATES_CONFIRMRED_THRESHOLD)]
+    df_state = df_state[(df_state['Confirmed'] > US_STATES_CONFIRMED_THRESHOLD)]
 
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Confirmed')
@@ -58,18 +64,21 @@ def us_plot_confirmed():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Confirmed')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def us_pct_change_confirmed():
-    df = df_us_confirmed.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'],
-                              var_name='Date', 
-                              value_name='Confirmed')
+    df = df_us_confirmed.melt(
+        id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                 'Combined_Key'],
+        var_name='Date',
+        value_name='Confirmed')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Province_State', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Confirmed']>US_STATES_CONFIRMRED_THRESHOLD)]
+    df_state = df_state[(df_state['Confirmed'] > US_STATES_CONFIRMED_THRESHOLD)]
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Confirmed')
     df_pct_change = df_state.pct_change()
@@ -82,18 +91,21 @@ def us_pct_change_confirmed():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Percent Change')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def us_pct_change_deaths():
-    df = df_us_deaths.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key', 'Population'],
-                           var_name='Date', 
-                           value_name='Deaths')
+    df = df_us_deaths.melt(
+        id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                 'Combined_Key', 'Population'],
+        var_name='Date',
+        value_name='Deaths')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Province_State', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Deaths']>US_STATES_DEATHS_THRESHOLD)]
+    df_state = df_state[(df_state['Deaths'] > US_STATES_DEATHS_THRESHOLD)]
     df_state.drop(columns=['UID', 'code3', 'FIPS', 'Lat', 'Long_', 'Population'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Province_State', values='Deaths')
     df_pct_change = df_state.pct_change()
@@ -107,13 +119,16 @@ def us_pct_change_deaths():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Percent Change')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def us_top_7_day_increase():
-    df = df_us_confirmed.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'],
-                              var_name='Date', 
-                              value_name='Confirmed')
+    df = df_us_confirmed.melt(
+        id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                 'Combined_Key'],
+        var_name='Date',
+        value_name='Confirmed')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Province_State', 'Date']).agg('sum')
@@ -139,13 +154,16 @@ def us_top_7_day_increase():
     ax.legend(loc='upper right', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('State')
     ax.set_ylabel('Percent Change')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def us_top_7_day_increase_deaths():
-    df = df_us_deaths.melt(id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_', 'Combined_Key', 'Population'],
-                              var_name='Date', 
-                              value_name='Deaths')
+    df = df_us_deaths.melt(
+        id_vars=['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                 'Combined_Key', 'Population'],
+        var_name='Date',
+        value_name='Deaths')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Province_State', 'Date']).agg('sum')
@@ -171,18 +189,19 @@ def us_top_7_day_increase_deaths():
     ax.legend(loc='upper right', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('State')
     ax.set_ylabel('Percent Change')
-    ax.patch.set_edgecolor('black') 
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def global_plot_confirmed():
     df = df_global_confirmed.melt(id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'],
-                                  var_name='Date', 
+                                  var_name='Date',
                                   value_name='Confirmed')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Country/Region', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Confirmed']>GLOBAL_CONFIRMRED_THRESHOLD)]
+    df_state = df_state[(df_state['Confirmed'] > GLOBAL_CONFIRMED_THRESHOLD)]
 
     df_state.drop(columns=['Lat', 'Long'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Country/Region', values='Confirmed')
@@ -195,18 +214,19 @@ def global_plot_confirmed():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Confirmed')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def global_pct_change_confirmed():
     df = df_global_confirmed.melt(id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'],
-                                  var_name='Date', 
+                                  var_name='Date',
                                   value_name='Confirmed')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Country/Region', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Confirmed']>GLOBAL_CONFIRMRED_THRESHOLD)]
+    df_state = df_state[(df_state['Confirmed'] > GLOBAL_CONFIRMED_THRESHOLD)]
 
     df_state.drop(columns=['Lat', 'Long'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Country/Region', values='Confirmed')
@@ -221,18 +241,19 @@ def global_pct_change_confirmed():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Percent Change')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def global_plot_deaths():
     df = df_global_deaths.melt(id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'],
-                                  var_name='Date', 
-                                  value_name='Deaths')
+                               var_name='Date',
+                               value_name='Deaths')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Country/Region', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Deaths']>GLOBAL_DEATHS_THRESHOLD)]
+    df_state = df_state[(df_state['Deaths'] > GLOBAL_DEATHS_THRESHOLD)]
 
     df_state.drop(columns=['Lat', 'Long'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Country/Region', values='Deaths')
@@ -245,18 +266,19 @@ def global_plot_deaths():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Deaths')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def global_pct_change_deaths():
     df = df_global_deaths.melt(id_vars=['Province/State', 'Country/Region', 'Lat', 'Long'],
-                                  var_name='Date', 
-                                  value_name='Deaths')
+                               var_name='Date',
+                               value_name='Deaths')
     df['Date'] = pd.to_datetime(df['Date'])
 
     df_state = df.groupby(by=['Country/Region', 'Date']).agg('sum')
     df_state.reset_index(inplace=True)
-    df_state = df_state[(df_state['Deaths']>GLOBAL_DEATHS_THRESHOLD)]
+    df_state = df_state[(df_state['Deaths'] > GLOBAL_DEATHS_THRESHOLD)]
 
     df_state.drop(columns=['Lat', 'Long'], inplace=True)
     df_state = pd.pivot(df_state, index='Date', columns='Country/Region', values='Deaths')
@@ -271,8 +293,9 @@ def global_pct_change_deaths():
     ax.legend(loc='upper left', frameon=True, fancybox=True, shadow=True)
     ax.set_xlabel('Date')
     ax.set_ylabel('Percent Change')
-    ax.patch.set_edgecolor('black')  
-    ax.patch.set_linewidth('1') 
+    ax.patch.set_edgecolor('black')
+    ax.patch.set_linewidth('1')
+
 
 def main():
     us_plot_deaths()
@@ -286,6 +309,7 @@ def main():
     us_top_7_day_increase()
     us_top_7_day_increase_deaths()
     plt.show()
+
 
 if __name__ == '__main__':
     main()
